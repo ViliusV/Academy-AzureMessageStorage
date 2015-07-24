@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>ASP.NET MVC + AZURE</h1>
+    <p class="lead">This application adds messages to Azure queue and allows to add all messages to Blob storage</p>
+</div>
+
+<div class="row">
+    @Html.ActionLink("Start sending messages", "Index", "Message")
+</div>
