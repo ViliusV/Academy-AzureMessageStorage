@@ -8,7 +8,7 @@ namespace MessagesStorage.AzureConfiguration
 {
 	public static class Configuration
 	{
-		public const string AuthorName = ;
+		public const string AuthorName = "viliaus";
 
 		public static CloudStorageAccount GetStorageAccount()
 		{
@@ -23,10 +23,11 @@ namespace MessagesStorage.AzureConfiguration
 			var account = GetStorageAccount();
 			var queueName = "messages-" + AuthorName;
 			
-			//TODO: return Azure queue
-			throw new NotImplementedException();
+			//Implementation:
+			var client = account.CreateCloudQueueClient();
+			var queue = client.GetQueueReference(queueName);
+			queue.CreateIfNotExists();
 
-			CloudQueue queue = null;
 			return queue;
 		}
 
@@ -34,10 +35,12 @@ namespace MessagesStorage.AzureConfiguration
 		{
 			var account = GetStorageAccount();
 			var containerName = "reports-container-" + AuthorName;
-			//TODO: return Azure container
-			throw new NotImplementedException();
 
-			CloudBlobContainer container = null;
+			//Implementation:
+			var client = account.CreateCloudBlobClient();
+			var container = client.GetContainerReference("reports-file");
+			container.CreateIfNotExists();
+
 			return container;
 		}
 

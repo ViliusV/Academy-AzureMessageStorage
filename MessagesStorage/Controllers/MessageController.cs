@@ -48,10 +48,12 @@ namespace MessagesStorage.Controllers
 			// Create or overwrite the "myblob" blob with contents from a local file.
 			using (var fileStream = System.IO.File.OpenRead("reports.txt"))
 			{
-				//TODO: save file to blob
 				var container = Configuration.GetContainer();
 				var blobName = string.Format("Reports-{0}.txt", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
-				throw  new NotImplementedException();
+				
+				//Implementation:
+				CloudBlockBlob blockBlob = container.GetBlockBlobReference(blobName);
+				blockBlob.UploadFromStream(fileStream);
 
 			}
 
@@ -61,8 +63,9 @@ namespace MessagesStorage.Controllers
 	    private void AddMessageToQueue(MessageViewModel message)
 	    {
 		    var queue = Configuration.GetQueue();
-			//TODO: add message to Azure queue
-		    throw new NotImplementedException();
+			
+			//Implementation:
+			queue.AddMessage(new CloudQueueMessage(message.ToJson()));
 	    }
 
 	    private IEnumerable<string> GetAllMessagesFromQueue()
@@ -71,10 +74,11 @@ namespace MessagesStorage.Controllers
 
 		    var queue = Configuration.GetQueue();
 
-			//TODO: 
-			//1. Peek at the queue to check if messages exist 
-			//2. get messages from the queue and add them to the list
-			throw new NotImplementedException();
+			//Implementation:
+			while (queue.PeekMessage() != null)
+			{
+				messages.Add(queue.GetMessage().AsString);
+			}
 
 		    return messages;
 	    } 
